@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Vault-Tec Emergency Relief Fund</title>
+
+<style>
+
+body {
+  color: black;
+  font-size: large;
+  text-align: left;
+  background-image: url(https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgetwallpapers.com%2Fwallpaper%2Ffull%2F4%2F1%2F9%2F33608.jpg&f=1&nofb=1);
+
+}
+
+.head {
+  background-color: #FEF265;
+  border: 3px solid #325886;
+  font-family: tahoma;
+}
+
+.main-body {
+  background-color: #325886;
+  display: inline-block;
+  width: 500px;
+  border: 4px solid #FEF265;
+  margin: 30px 0px 0px 150px;
+  text-align: center;
+
+}
+
+.inputs {
+  color: white;
+}
+
+.signature {
+  margin: auto;
+  height: 50px;
+  width: 200px;
+
+}
+
+.signup {
+  background-color: #FEF265
+}
+
+.sigEl {
+  color: #FEF265;
+}
+
+
+
+</style>
+
+  </head>
+  <body>
+    <div class="main-body">
+        <div class="head">
+        <h1>Vault-Tec Emergency Relief Fund</h1>
+        <p>Here at Vault-Tec, we are committed to helping the world be prepared for any scenario.
+           Sign up below to become a part of our relief fund across the country.</p>
+        <p style="font-size: 15px; font-style: italic;">Vault-Tec - Revolutionizing safety for an uncertain future.</p>
+         </div><br/>
+
+         <div class="inputs">
+            <label>First Name:</label>
+            <input id="firstName" type="text"></input><br/><br/>
+
+            <label>Last Name:</label>
+            <input id="lastName" type="text"></input><br/><br/>
+
+            <label>Email Address:</label>
+            <input id="email" type="text"></input><br/><br/>
+
+            <button class="signup" onclick="signUp()">Sign Up</button><br/><br/>
+        </div>
+
+        <label style="color:white;">Signatures:</label>
+        <br/><div id="sigEl" class="sigEl"></div>
+  </div>
+
+    <script>
+
+    function signUp() {
+      let signature = firstName.value + " " + lastName.value + " (" + email.value + ")<br/>";
+      if(firstName.value == '' || lastName.value == '' || email.value == ''){
+        alert("Error with sign up: Please fill out the required fields.");
+        exit();
+      }
+
+      let html = sigEl.innerHTML;
+      html += signature;
+      sigEl.innerHTML = html;
+    }
+
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Text to Sign Language</title>
+    <style>
+
+body{
+    background-color: black;
+    color: white;
+}
+#page-heading {
+    text-align: center;
+}
+#page-description {
+    text-align: center;
+}
+.controls {
+    height: 100px;
+    width: 80%;
+    background-color: #000077;
+    padding: 10px 40px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid white;
+}
+.display-stage {
+    height: 600px;
+    width: 80%;
+    background-color: #222299;
+    padding: 10px 40px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: auto;
+    border: 1px solid white;
+    border-top: none;
+}
+.chr-img {
+    width: 60px;
+    height: 120px;
+    vertical-align: middle;
+}
+.chr-non-img {
+    font-size: 120px;
+    vertical-align: middle;
+}
+.control {
+    vertical-align: top;
+    font-size: 20px;
+}
+.text-control {
+    height: 80px;
+    width: calc(80% - 150px);
+}
+
+
+    </style>
+  </head>
+  <body>
+      <h1 id="page-heading">Text to Sign Language</h1>
+      <h2 id="page-description">Enter text in the box below and hit enter or click the button to convert it to sign language!</h2>
+      <hr/>
+      <div class="controls">
+          <label class="control" for="user-text">Text to Convert:</label>
+          <textarea id="user-text" class="control text-control" placeholder="Enter text here..." onkeypress="detectKey()"></textarea>
+          <button class="control" type="button" onclick="convert()">Text to Sign Language!</button>
+      </div>
+      <div class="display-stage">
+        <img class="chr-img" src="images/l-labelled.png"/>
+        <img class="chr-img" src="images/e-labelled.png"/>
+        <img class="chr-img" src="images/t-labelled.png"/>
+        <img class="chr-img" src="images/t-labelled.png"/>
+        <img class="chr-img" src="images/e-labelled.png"/>
+        <img class="chr-img" src="images/r-labelled.png"/>
+        <img class="chr-img" src="images/s-labelled.png"/>
+        <span class="chr-non-img">&nbsp;</span>
+        <img class="chr-img" src="images/a-labelled.png"/>
+        <img class="chr-img" src="images/s-labelled.png"/>
+        <span class="chr-non-img">&nbsp;</span>
+        <img class="chr-img" src="images/s-labelled.png"/>
+        <img class="chr-img" src="images/i-labelled.png"/>
+        <img class="chr-img" src="images/g-labelled.png"/>
+        <img class="chr-img" src="images/n-labelled.png"/>
+        <span class="chr-non-img">&nbsp;</span>
+        <img class="chr-img" src="images/l-labelled.png"/>
+        <img class="chr-img" src="images/a-labelled.png"/>
+        <img class="chr-img" src="images/n-labelled.png"/>
+        <img class="chr-img" src="images/g-labelled.png"/>
+        <img class="chr-img" src="images/u-labelled.png"/>
+        <img class="chr-img" src="images/a-labelled.png"/>
+        <img class="chr-img" src="images/g-labelled.png"/>
+        <img class="chr-img" src="images/e-labelled.png"/>
+        <span class="chr-non-img">!</span>
+
+      </div>
+      <hr/>
+      <script>
+// ==== JavaScript ====
+console.log("Running application...");
+
+const alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+function convert() {
+
+    const textareaEl = document.querySelector(".text-control");
+    const stageEl = document.querySelector(".display-stage");
+
+    const text = textareaEl.value.toLowerCase();
+
+    let html = "";
+
+    for (let i=0; i<text.length; i++) {
+        const chr = text[i];
+
+        if (alphabet.indexOf(chr) !== -1) {
+            html += `<img class="chr-img" src="images/${chr}-labelled.png"/>\n`
+        }
+        else if (chr === " ") {
+            html += `<span class="chr-non-img">&nbsp;</span>\n`
+        }
+        else if (chr === "&") {
+            html += `<span class="chr-non-img">&amp;</span>\n`
+        }
+        else if (chr === "<") {
+            html += `<span class="chr-non-img">&lt;</span>\n`
+        }
+        else if (chr === "\n") {
+            html += `<br/><br/><br/><br/>\n`
+        }
+        else {
+            html += `<span class="chr-non-img">${chr}</span>\n`
+        }
+    }
+    stageEl.innerHTML = html;
+}
+
+function detectKey() {
+    const ev = window.event;
+    if (ev.keyCode === 13 && !ev.shiftKey) {
+        ev.preventDefault();
+        convert();
+    }
+}
+
+      </script>
+  </body>
+</html>
