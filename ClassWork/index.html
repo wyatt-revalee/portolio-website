@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.button {
+    background-color: white;
+    border: 1px solid #000000
+}
+</style>
+</head>
+<body>
+    <h1>Welcome to the CS-17014 Index Page</h1>
+    <h2>In-Class Work</h2>
+    <div>
+        <button class="button" id="modeChange" type="button" onclick="changeMode()">Dark Mode</button>
+    </div>
+    <ul>
+        <li>
+            <a href="in-class/cat.html">Cat</a>
+        </li>
+        <li>
+            <a href="in-class/html5doc.html">Html5 Doc</a>
+        </li>
+        <li>
+            <a href="in-class/article-layout.html">Article Layout</a>
+        </li>
+        <li>
+            <a href="in-class/span-vs-div.html">Span VS Div</a>
+        </li>
+        <li>
+            <a href="in-class/box-model-and-positioning.html">Box Model and Positioning</a>
+        </li>
+        <li>
+            <a href="in-class/text-align.html">Text Align</a>
+        </li>
+        <li>
+            <a href="in-class/vertical-align.html">Vertical Align</a>
+        </li>
+        <li>
+            <a href="in-class/position.html">CSS Position Property</a>
+        </li>
+        <li>
+            <a href="in-class/events/button-alert.html">Button Alert</a>
+        </li>
+        <li>
+            <a href="in-class/events/counter.html">Counter</a>
+        </li>
+        <li>
+            <a href="a5/index.html">Assignment 5</a>
+        </li>
+    </ul>
+    <h2>Notes / Other Work</h2>
+    <ul>
+        <li>
+            <a href="other-work/general.html">General</a>
+        </li>
+        <li>
+            <a href="other-work/lists.html">Lists</a>
+        </li>
+        <li>
+            <a href="other-work/buttons.html">Buttons</a>
+        </li>
+    </ul>
+    <script>
+        var light = 1
+        function changeMode() {
+            light++;
+            if(light % 2 == 0) {
+                document.body.style.backgroundColor= "black";
+                document.body.style.color= "white";
+                document.getElementById('modeChange').innerHTML = "Light Mode"
+                document.getElementById('modeChange').style.backgroundColor = "black";
+                document.getElementById('modeChange').style.color = "white";
+                document.getElementById('modeChange').style.borderColor = "white";
+            }
+            if(light % 2 != 0) {
+                document.body.style.backgroundColor= "white";
+                document.body.style.color= "black";
+                document.getElementById('modeChange').innerHTML = "Dark Mode"
+                document.getElementById('modeChange').style.backgroundColor = "white";
+                document.getElementById('modeChange').style.color = "black";
+                document.getElementById('modeChange').style.borderColor = "black";
+                document.getElementById('modeChange:').style.borderColor = "black";
+                light = 1;
+            }
+        }
+    </script>
+</body>
+<html>
