@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Box Model and Positioning</title>
+<style>
+/* Comment in CSS */
+body {
+    background-color: black;
+    color: #aaaaaa
+}
+
+.container {
+    background-color: #666666;
+    position: relative;
+}
+.dummy {
+    background-color: white;
+    width: 50px;
+    height: 50px;
+}
+.ex1 {
+    border: solid 2px red;
+}
+.ex2 {
+    border: solid 2px blue;
+}
+.ex3 {
+    border: solid 2px green;
+}
+.ex4 {
+    border: solid 2px orange;
+}
+.ex5 {
+    border: solid 2px purple;
+}
+.ex {
+    background-color: #aaaaaa;
+    padding: 10px;
+    margin: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+#position-relative {
+    position: relative;
+    left: 10px;
+    top: 10px;
+}
+#position-absolute {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+#position-fixed {
+    position: fixed;
+    right: 20px;
+    bottom: 300px;
+}
+
+</style>
+    </head>
+    <body>
+        <h2>Default</h2>
+        <div class="container">
+            <div style="display: block;" class="ex1 ex">
+                <div class="dummy">
+                </div>
+            </div>
+            <div style="display: block;" class="ex1 ex">
+                <div class="dummy">
+                    <img src="https://placekitten.com/50/50">
+                </div>
+            </div>
+            <div style="display: block;" class="ex1 ex">
+                <div class="dummy">
+                </div>
+            </div>
+        </div>
+
+
+        <h2>Inline Block</h2>
+        <code>
+            background-color: #aaaaaa;<br/>
+            border: solid 2px blue;<br/>
+            padding: 10px;<br/>
+            margin: 10px;<br/>
+            display: inline-block;<br/>
+        </code>
+        <div class="container">
+            <div class="ex2 ex">
+                <div class="dummy">
+                </div>
+            </div>
+            <div class="ex2 ex">
+                <div class="dummy">
+                    <img src="https://placekitten.com/50/50">
+                </div>
+            </div>
+            <div class="ex2 ex">
+                <div class="dummy">
+                </div>
+            </div>
+        </div>
+
+
+        <h2>Position Relative</h2>
+        <code>
+            display: inline-block;<br/>
+            position: relative;<br/>
+            left: 10px;<br/>
+            top: 10px;<br/>
+        </code>
+        <div class="container">
+            <div class="ex3 ex">
+                <div class="dummy">
+                </div>
+            </div>
+            <div id="position-relative"; class="ex3 ex">
+                <div class="dummy">
+                    <img src="https://placekitten.com/50/50">
+                </div>
+            </div>
+            <div class="ex3 ex">
+                <div class="dummy">
+                </div>
+            </div>
+        </div>
+
+
+        <h2>Position Absolute</h2>
+        <code>
+            display: inline-block;<br/>
+            position: absolute;<br/>
+            right: 20px;<br/>
+            bottom: 20px;<br/>
+        </code>
+        <div class="container">
+            <div class="ex4 ex">
+                <div class="dummy">
+                </div>
+            </div>
+            <div id="position-absolute"; class="ex4 ex">
+                <div class="dummy">
+                    <img src="https://placekitten.com/50/50">
+                </div>
+            </div>
+            <div class="ex4 ex">
+                <div class="dummy">
+                </div>
+            </div>
+        </div>
+
+        <h2>Position Fixed</h2>
+        <code>
+            display: inline-block;<br/>
+            position: fixed;<br/>
+            right: 20px;<br/>
+            bottom: 20px;<br/>
+        </code>
+        <div class="container">
+            <div class="ex5 ex">
+                <div class="dummy">
+                </div>
+            </div>
+            <div id="position-fixed"; class="ex5 ex">
+                <div class="dummy">
+                    <img src="https://placekitten.com/50/50">
+                </div>
+            </div>
+            <div class="ex5 ex">
+                <div class="dummy">
+                </div>
+            </div>
+        </div>
+
+
+    </body>
+</html>

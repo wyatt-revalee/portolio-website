@@ -1,0 +1,232 @@
+Linux and Terminal
+
+Fill in the blank, what is the shortcut or key used in the linux terminal for each of the following.
+
+    Press this key to execute a command: enter
+    Keys that let you run a previously typed command again: up/down
+    Key to press to auto-complete a filename or command: tab
+    Shortcut for current directory (one character): .
+    Shortcut for directory one level up from current: ..
+    Shortcut for your home directory (one character): ~
+    Shortcut for the top of the entire file system (one character): /
+    Characters to put around a filename that has spaces: ""
+    Wildcard character: *
+
+Fill in the blank, what is the linux command to do each of the following.
+
+    Get how long since last system reboot: uptime
+    Get information about disk free space: df
+    Get which user is currently logged in on the terminal: whoami
+    Get what computer are you currently running commands on: hostname
+    Get which directory are you inside of: pwd
+    Clear the terminal screen: clear
+    See which other users are currently logged in: w
+    Help about a command (manual): man
+    Change directory: cd
+    Make a new directory: mkdir
+    List directory contents: ls
+    Flag/option to use with previous command to list details of files: -s
+    Copy file(s): cp
+    Remove files: rm
+    Remove directory: rmdir
+    Move or rename a file or directory: mv
+    A terminal text editor: nano
+    Change your password: chpw
+    Print out first few lines of a file: echo
+    Change file permissions: chmod
+    Display current system memory usage: free
+    See current time and date: date
+
+Give the complete linux terminal command to complete each of the following tasks. Tasks such as these could be asked about.
+
+    Create a new directory HELLO in your home directory: mkdir ~/HELLO
+    Copy the contents of jkinne's GREAT directory into your home directory: cp jkinne/GREAT ~/
+    Change directory to your home directory: cd ~
+    Check to see who is logged in: w
+    List the contest of the directory ~cs151/ including the sizes of the files: ls -l
+
+Python Keywords and Functions
+
+What is the python keyword or function for each of the following.
+
+    exit the current loop: exit
+    in a loop, go to next iteration of the loop: continue
+    determine whether two objects are the same object (not just value): ===
+    load a module (two keywords): import (file)
+    declare a function: def
+    loop with only condition: while
+    conditional statements (three keywords): if, else, elif
+    loop with that iterates through a list: for
+    keyword to send a value back from a function: return
+    boolean operator, True only if both sides are True: and
+    boolean operator, True if either side is True: or
+    boolean operator, negates: not
+    boolean values (two keywords): true, false
+    remove from a list by position: del
+    handle an exception, basic use (2 keywords): try, except
+    raise/indicate an exception (2 keywords): raise, except
+    test if something is inside of a list/string/tuple/dictionary: in
+    special value for a variable that has no value: NULL
+    empty statement that does not do anything: pass
+    function to write to the screen: print()
+    functions to convert to integer, floating point number, or string (3 functions): int(), float(), str()
+    function to generate a sequence of numbers: range()
+    function to get the length of a string, list, or tuple: len()
+
+What is the name of the following programming concept.
+
+    text data type: char
+    data type for True and False: boolean
+    data type that stores numbers with fractional parts (e.g., 3.14 or 2.2): float
+    data type that stores only integers: int
+
+Python Operators and Expressions
+
+What are the Python3 operators for each of the following.
+
+    multiplication, subtraction, addition: *, -, +
+    integer division: //
+    floating point division: /
+    remainder: %
+    exponentiation: **
+    testing membership in a string, tuple, or list: in
+
+Evaluate the following Python3 expressions. Expressions similar to these could be asked.
+
+    4 - 2 * 1 = 2
+    1 + 2 ** 3 = 9
+    7 // 2 = 3
+    'hello'[0:2] = 'he'
+    range(0, 4) = range(0, 4)
+    '3' + '2' =
+    int('3') + int('2') = 5
+    '3' * 2 = 33
+    'Hello'.upper() = 'HELLO'
+    len('hi there') = 8
+
+Basic Python Programs
+
+Write a complete and correct Python3 program to do the following. Programs of similar complexity as these could be asked.
+
+    Print the integers from 1 to 10 along with those numbers squared.
+for i in range(1, 11):
+    print(i, i**2)
+
+    Take two integers as input from the user and print a rectangle of *'s with those dimensions.
+    import argparse
+    import sys
+
+    height = int(sys.argv[1])
+    width = int(sys.argv[2])
+
+    i = 0;
+    while i < height:
+        print('*'*width)
+        i += 1
+
+    Ask the user for the answer. If they type "42", print "but what is the question.". If they don't type "42" ask again, and keep asking until they type "42".
+    answer = 0
+    while answer != 42:
+        answer = int(input("What is the answer?\n"))
+        if answer == 42:
+            question = 0;
+            while question != 42:
+                question = int(input("But what is the question?\n"))
+
+
+    Print the powers of 2 up to 1024 (which is 2**10).
+for i in range(1, 11):
+    print(2**i)
+
+Play Computer
+
+Write down all variables in each of the following programs and keep track of their values as well as what is printed on the screen. Programs of similar complexity as these could be asked.
+
+def fun(n):
+  if n <= 0: return
+  print(n)
+  fun(n//2)
+fun(42)
+
+printed out:
+42
+21
+10
+5
+2
+1
+
+n = 42
+
+for i in range(0, 5):
+  for j in range(i, 5):
+    print('x'*j)
+
+printed out:
+x
+xx
+xxx
+xxxx
+x
+xx
+xxx
+xxxx
+xx
+xxx
+xxxx
+xxx
+xxxx
+xxxx
+
+i = 4, j = 4
+
+L = 'what is the meaning of this?'.split()
+for x in L:
+  print(x, 'a' in x)
+
+printed out:
+what True
+is False
+the False
+meaning True
+of False
+this? False
+
+L = ['what', 'is', 'the', 'meaning', 'of', 'this?']
+
+Math
+
+Complete each of the following math rules.
+
+    2a+b =
+    ya * yb =
+    logbx = y, means:
+    logb(xy) = logb(x) + logb(y)
+    Arithmetic Sum: (1 + 2 + ... + n) = n 8 (n+1) / 2
+    not (A and B) is equivalent to: (not A) or (not B)
+
+CS Terms
+
+What is the definition of each of the following.
+
+    bit: smallest unit of digital data
+    byte: unit equal to 8 bits
+    KB: unit equal to 1024 bytes
+    K Hz: kilohertz. A measure of frequency.
+    RAM: Random Access Memory
+    SSD: Solid State Drive. Stores data in a computer. Much faster than a HDD.
+    CPU: Central Processing Unit. The "brain" of the computer
+
+Base Systems
+
+Do the following conversions between bases.
+
+    Convert 15 from decimal to binary: 1111
+    Convert 1010 from binary to decimal: 10
+    Convert 1010 from binary to hexadecimal: A
+
+What is the largest number possible for each of the following.
+
+    Decimal number with 3 digits: 999
+    Binary number with 3 bits (it's binary and decimal value): 111 or 7
+    Hexadecimal number with 1 digit (it's hex and decimal values): F or 15

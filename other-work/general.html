@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>General</title>
+    <h1>Overview</h1>
+    <h3>This page is an overview of HTML code for different things</h3>
+    <h5>Dashes ( ---- ) will be used to show indentation</h5>
+<head>
+<body>
+
+    <p>Sample HTML Template<p>
+
+    <p>&lt!DOCTYPE html&gt<br>
+        &lthtml&gt<br>
+        &lthead&gt<br>
+        &lt/head&gt<br>
+        &ltbody&gt<br>
+        &lt/body&gt<br>
+        &lthtml&gt
+    </p>
+
+    <p>Links - when clicked, takes the user to a different webpage. Can also be used to link pictures to a webpage.<br>
+        &lta href="./file.txt"&gtName of link&lt/a&gt<br>
+        &lta href="www.website.com"&gtName of link&lt/a&gt<br>
+        <a href="general.html">Link to this page</a>
+    </p>
+    <p>Image link of a cat.<br>
+        <img src="../in-class/cat.jpg" width="150" height="100"><br>
+        &ltimg src="cat.jpg" width="150" height="100"&gt
+    </p>
+
+    <p><a href="./lists.html">Lists</a><br>
+        Unordered (bulleted)<br>
+        &ltul&gt<br>
+        ----&ltli&gtA List item&ltli&gt<br>
+        &lt/ul&gt
+    </p>
+
+    <p>Ordered Lists<br>
+        &ltol type='i'&gt<br>
+        ----&ltli&gtList with lowercase Roman numerals&lt/li&gt<br>
+        &lt/ol&gt<br>
+        &ltol type='I'&gt<br>
+        ----&ltli&gtList with uppercase Roman numerals&lt/li&gt<br>
+        &lt/ol&gt<br>
+    </p>
+
+    <p>Lists can also be nested in each other<br>
+        &ltol type='a'&gt<br>
+        ----&ltli&gtlowercase alpha&lt/li&gt<br>
+        ----&ltol type='A'&gt<br>
+        --------&ltli&gtuppercase alpha&lt/li&gt<br>
+        ----&lt/ol&gt<br>
+        &lt/ol&gt<br>
+    </p>
+
+    <p><a href="./buttons.html">Buttons</a> - Can be used to do things, such as execute JS functions, when clicked.<br>
+
+        &ltbutton type="button" onclick="black()"&gtBlack&lt/button&gt<br>
+        &ltscript&gt<br>
+        function black() {<br>
+        ----document.body.style.backgroundColor= "black";<br>
+        ----document.getElementById("mainHeader").style.color = "white";<br>
+        }<br>
+    &lt/script&gt<br>
+
+    The above code will create a button labeled "Black" that, when clicked, will execute the function black(), which changes the background color to black, and the header with ID of "mainHeader" to white.
+    <p>
+</body>
+</html>

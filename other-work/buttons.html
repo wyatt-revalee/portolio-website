@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Buttons</title>
+    <h1 id="mainHeader">Buttons</h1>
+</head>
+<body>
+    <button type="button" onclick="white()">White</button>
+    <button type="button" onclick="black()">Black</button>
+    <button type="button" onclick="red()">Red</button>
+    <button type="button" onclick="orange()">Orange</button>
+    <button type="button" onclick="yellow()">Yellow</button>
+    <button type="button" onclick="green()">Green</button>
+    <button type="button" onclick="blue()">Blue</button>
+    <button type="button" onclick="purple()">Purple</button>
+    <button type="button" onclick="randomColor()">Random</button>
+
+<script>
+    function white() {
+        document.body.style.backgroundColor= "white";
+        document.getElementById("mainHeader").style.color = "black";
+    }
+    function black() {
+        document.body.style.backgroundColor= "black";
+        document.getElementById("mainHeader").style.color = "white";
+    }
+    function red() {
+        document.body.style.backgroundColor= "red";
+    }
+    function orange() {
+        document.body.style.backgroundColor= "orange";
+    }
+    function yellow() {
+        document.body.style.backgroundColor= "yellow";
+    }
+    function green() {
+        document.body.style.backgroundColor= "green";
+    }
+    function blue() {
+        document.body.style.backgroundColor= "blue";
+    }
+    function purple() {
+        document.body.style.backgroundColor= "purple";
+    }
+    function randomColor() {
+        var r = Math.floor(Math.random() * 256);
+        var g = Math.floor(Math.random() * 256);
+        var b = Math.floor(Math.random() * 256);
+        document.body.style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
+    }
+</script>
+</body>
+</html>

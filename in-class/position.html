@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>CSS Position Property</title>
+        <style media="screen">
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: #000000;
+    color: white;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.page-heading {
+    text-align: center;
+}
+.app {
+    width: 100%;
+    height: 100%;
+}
+.outer {
+    background-color: #0000cc;
+    text-align: center;
+}
+.middle {
+    display: inline-block;
+    background-color: #9999ff;
+    padding: 20px;
+    border: solid black 5px;
+    margin: 20px;
+
+}
+.inner {
+    display: inline-block;
+    background-color: #ffffff;
+    width: 100px;
+    height: 100px;
+
+}
+        </style>
+    </head>
+    <body>
+<div class="app">
+    <h1 class="page-heading">CSS Position Property</h1>
+    <div class="outer">
+        <div class="middle">
+            <div class="inner">
+            </div>
+        </div>
+        <div class="middle">
+            <div id="puppy" class="inner">
+                <img src="http://placekitten.com/100/100"/>
+            </div>
+        </div>
+        <div class="middle">
+            <div class="inner">
+            </div>
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="outer">
+        <label for="position-dropdown">CSS Position:</label>
+        <select id="position-dropdown" onchange="updatePuppy()">
+            <option value="static">Static</option>
+            <option value="relative">Relative</option>
+            <option value="fixed">Fixed</option>
+            <option value="absolute">Absolute</option>
+        </select>
+        <br/>
+        <label for="bottom-textbox">Bottom:</label>
+        <input type="number" min="0" id="bottom-textbox" value="10" onchange="updatePuppy()">
+        <br/>
+        <label for="right-textbox">Right:</label>
+        <input type="number" min="0" id="right-textbox" value="10" onchange="updatePuppy()">
+    </div>
+</div>
+
+    <script>
+
+console.log("Starting application...");
+
+function updatePuppy() {
+    getElementbyid("puppy")
+}
+    </body>
+</html>

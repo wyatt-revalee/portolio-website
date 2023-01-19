@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+    <head>
+        <title>Span VS Div</title>
+        <link rel="icon" href="http://placekitten.com/16/16"/>
+        <meta charset="utf-8"/>
+<style>
+/* Comments in CSS */
+body {
+    background-color: gray;
+}
+.container {
+    background-color: #cccccc
+}
+.child1{
+    background-color: #2255ff
+}
+.child2{
+    background-color: #55ff22
+}
+.child3{
+    background-color: #ff5522
+}
+</style>
+    </head>
+    <body>
+        <h1>Spans Vs Divs</h1>
+
+        <h2>Spans &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;span&gt;)</h2>
+        <div class="container">
+            <span class="child1">foo</span>
+            <span class="child2">bar</span>
+            <span class="child3">baz</span>
+        </div>
+
+        <h2>Divs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;div&gt;)</h2>
+        <div class="container">
+            <div class="child1">foo</div>
+            <div class="child2">bar</div>
+            <div class="child3">baz</div>
+        </div>
+        <h2>Spans display: block &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;span&gt;)</h2>
+        <div class="container">
+            <span style="display:block;" class="child1">foo</span>
+            <span style="display:block;" class="child2">bar</span>
+            <span style="display:block;" class="child3">baz</span>
+        </div>
+        <h2>Divs display: inline&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;div&gt;)</h2>
+        <div class="container">
+            <div style="display:inline;" class="child1">foo</div>
+            <div style="display:inline;" class="child2">bar</div>
+            <div style="display:inline;" class="child3">baz</div>
+        </div>
+    </body>
+</html>

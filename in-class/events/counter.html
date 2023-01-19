@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Counter</title>
+    </head>
+
+    <style>
+
+body {
+    color: white;
+    text-align: center;
+    background-image: url(https://cubespace.co.za/wp-content/uploads/2017/11/Depositphotos_3846803_original.jpg);
+}
+
+
+#display {
+    display: inline-block;
+    font-size: 160px;
+}
+    </style>
+    <body>
+        <h1>Counter</h1>
+
+<button onclick="up()">^</button><br/>
+<div id="display" onmouseover="clearColor()">10</div><br/>
+<button onclick="down()">v</button>
+
+<script>
+
+// JS ---------------
+console.log("Application started...");
+function up() {
+    console.log("up");
+    let countEl = document.getElementById("display");
+    let count = countEl.innerText;
+    count = parseInt(count);
+    // console.log(count);
+    // console.log(typeof count);
+    count++;
+    countEl.innerText = (count + "");
+    countEl.setAttribute("style", "background-color: green");
+}
+let down = function () {
+    console.log("down");
+    let countEl = document.getElementById("display");
+    let count = countEl.innerText;
+    count = parseInt(count);
+    // console.log(count);
+    // console.log(typeof count);
+    count--;
+    countEl.innerText = (count + "");
+    countEl.setAttribute("style", "background-color: red");
+};
+
+function clearColor() {
+    let displayEl = document.getElementById("display");
+    displayEl.setAttribute("style", "");
+}
+
+// JS END -----------
+</script>
+
+    </body>
+</html>
