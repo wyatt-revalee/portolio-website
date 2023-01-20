@@ -1617,7 +1617,7 @@ input::-moz-focus-inner {
   -webkit-transform: translate3d(0, -50%, 0);
   transform: translate3d(0, -50%, 0);
   position: absolute;
-  top: 50%;
+  top: 20%;
   left: 40px;
 }
 
@@ -1632,7 +1632,7 @@ input::-moz-focus-inner {
 
 .header-logo img {
   width: 132px;
-  height: 132px;
+  height: 36px;
   margin: 0;
 }
 
