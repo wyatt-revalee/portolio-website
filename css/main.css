@@ -1497,7 +1497,7 @@ input::-moz-focus-inner {
 }
 
 .section-desc {
-  font-family: "Frank Ruhl Libre", serif;
+  font-family: Arial, Helvetica, sans-serif, serif;
   font-size: 5.4rem;
   font-weight: 400;
   line-height: 1.259;
@@ -1972,6 +1972,7 @@ input::-moz-focus-inner {
   line-height: 1.333;
   color: #2c17cf;
   margin-top: 0;
+  margin-left: 50px;
 }
 
 .intro-text h1 {
@@ -2537,8 +2538,8 @@ input::-moz-focus-inner {
 }
 
 .s-services h4 {
-  font-weight: 400;
-  color: #ffffff;
+  font-weight: 500;
+  color: #2c17cf;
 }
 
 .s-services a {
@@ -2571,7 +2572,7 @@ input::-moz-focus-inner {
 
 .services-list .item-service__content::before {
   display: block;
-  content: counter(ctr, decimal-leading-zero) ".";
+  /* content: counter(ctr, decimal-leading-zero) "."; */
   counter-increment: ctr;
   margin-bottom: 4.8rem;
   font-family: "Roboto", sans-serif;
