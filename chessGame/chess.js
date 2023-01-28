@@ -1,97 +1,137 @@
-//Insert images for the pieces
+// Inserting the Images
 function insertImage() {
-    document.querySelectorAll('.box').forEach(image => {
-        
-        if(image.innerText.length !== 0) {  //If tile isn't empty
-            if (image.innerText == 'Wpawn' || image.innerText == 'Bpawn') { //If tile is a pawn, add a pawn
-                
-                image.innerHTML = '${image.innerText} <img class='allimg allpawn' src="images/${image.innerText}.png" alt="">
-                image.style.cursor = 'pointer'
-            }
-        
-             else {     //Else, add respective piece
 
-                image.innerHTML = '${image.innerText} <img class='allimg' src="images/${image.innerText}.png" alt="">
+    document.querySelectorAll('.box').forEach(image => {
+
+        if (image.innerText.length !== 0) {
+            if (image.innerText == 'Wpawn' || image.innerText == 'Bpawn') {
+                image.innerHTML = `${image.innerText} <img class='allimg allpawn' src="${image.innerText}.png" alt="">`
+                image.style.cursor = 'pointer'
+
+            }
+
+            else {
+
+                image.innerHTML = `${image.innerText} <img class='allimg' src="${image.innerText}.png" alt="">`
                 image.style.cursor = 'pointer'
             }
         }
     })
-    insertImage() //Function call
+}
+insertImage()
 
-    //Tile Coloring
-    function coloring() {
-        const color = document.querySelectorAll('.box')
 
-        color.forEach(color => {
 
-            getId = color.id
-            arr = Array.from(getId)
-            arr.shift()
-            aside = eval(arr.pop())
-            aup = eval(arr.shift())
-            a = aside + aup
+//Coloring
 
-            if( a % 2 == 0) {
-                color.style.backgroundColor = 'rgb(240, 201, 150)'
-            }
-            if(a % 2 !== 0) {
-                color.style.backgroundColor = 'rgb(100, 75, 43)'
-            }
-        })
-    }
-    coloring() // Function call
+function coloring() {
+    const color = document.querySelectorAll('.box')
 
-    //Color own pieces red when moving piece
-    function colorRed() {
-        document.querySelectorAll('.box').forEach(i1 => {
-            if (i1.style.backgroundColor == 'red') {
+    color.forEach(color => {
 
-                document.querySelectorAll('.box').forEach(i2 => {
-                    
-                    if (i2.style.backgroundColor == 'green' && i2.innerText.length !== 0) {
+        getId = color.id
+        arr = Array.from(getId)
+        arr.shift()
+        aside = eval(arr.pop())
+        aup = eval(arr.shift())
+        a = aside + aup
 
-                        greenText = i2.innerText
-                        redText = i1.innerText
+        if (a % 2 == 0) {
+            color.style.backgroundColor = 'rgb(240, 201, 150)'
+        }
+        if (a % 2 !== 0) {
+            color.style.backgroundColor = 'rgb(100, 75, 43)'
+        }
 
-                        redColor = ((Array.from(redText)).shift()).toString()
-                        greenColor = ((Array.from(greenText)).shift()).toString()
+    })
+}
+coloring()
 
-                        if (redColor == greenColor) {
-                            i2.style.backgroundColor = 'rgb(254, 60, 60)'
-                        }
+
+
+
+//function to not remove the same team element
+
+function colorRed() {
+    document.querySelectorAll('.box').forEach(i1 => {
+        if (i1.style.backgroundColor == 'red') {
+
+            document.querySelectorAll('.box').forEach(i2 => {
+
+                if (i2.style.backgroundColor == 'green' && i2.innerText.length !== 0) {
+
+
+                    greenText = i2.innerText
+
+                    redText = i1.innerText
+
+                    redColor = ((Array.from(redText)).shift()).toString()
+                    greenColor = ((Array.from(greenText)).shift()).toString()
+
+                    getId = i2.id
+                    arr = Array.from(getId)
+                    arr.shift()
+                    aside = eval(arr.pop())
+                    aup = eval(arr.shift())
+                    a = aside + aup
+
+                    if (a % 2 == 0 && redColor == greenColor) {
+                        i2.style.backgroundColor = 'rgb(240, 201, 150)'
                     }
-                })
-            }
-        })
-    }
-
-    tog = 1
-
-    document.querySelectorAll('.box').forEach(item => {
-
-        item.addEventListener('click', function () {
-            // To delete the opposite element
-
-            if (item.style.backgroundColor == 'green' && item.innerText.length == 0) {
-                tog +=1
-            }
-
-            else if (item.style.backgroundColor == 'green' && item.innerText.length !== 0) {
-                
-                document.querySelectorAll('.box').forEach(i => {
-                    if (i.style.backgroundColor == 'red') {
-                        redId = i.id
-                        redText = i.innerText
-                        
-                        document.getElementById(redId).innerText = ''
-                        item.innerText = redText
-                        coloring()
-                        insertImage()
-                        tog += 1
+                    if (a % 2 !== 0 && redColor == greenColor) {
+                        i2.style.backgroundColor = 'rgb(100, 75, 43)'
                     }
-                })
-            }
-        })
+
+                    // if (redColor == greenColor) {
+                    //     i2.style.backgroundColor = 'rgb(253, 60, 60)'
+                    // }
+                }
+            })
+        }
+    })
+}
+
+
+
+
+
+
+
+
+
+
+tog = 1
+
+document.querySelectorAll('.box').forEach(item => {
+
+
+
+    item.addEventListener('click', function () {
+
+        // To delete the opposite element
+
+        if (item.style.backgroundColor == 'green' && item.innerText.length == 0) {
+            tog = tog + 1
+        }
+
+        else if (item.style.backgroundColor == 'green' && item.innerText.length !== 0) {
+
+            document.querySelectorAll('.box').forEach(i => {
+                if (i.style.backgroundColor == 'red') {
+                    redId = i.id
+                    redText = i.innerText
+
+                    document.getElementById(redId).innerText = ''
+                    item.innerText = redText
+                    coloring()
+                    insertImage()
+                    tog = tog + 1
+
+                }
+            })
+        }
+
+
 
         getId = item.id
         arr = Array.from(getId)
@@ -101,28 +141,32 @@ function insertImage() {
         aup = eval(arr.join(''))
         a = aside + aup
 
+
+
         // Function to display the available paths for all pieces
 
         function whosTurn(toggle) {
 
-            //PAWN
+            // PAWN
 
-            if (item.innerText == '${toggle}pawn') {
+            if (item.innerText == `${toggle}pawn`) {
                 item.style.backgroundColor = 'red'
 
-                if(tog % 2 !== 0 && aup < 800) {
+                if (tog % 2 !== 0 && aup < 800) {
 
-                    if (document.getElementById('b${a + 100}').innerText.length == 0) {
-                        document.getElementById('b${a + 100}').style.backgroundColor = 'green'
+                    if (document.getElementById(`b${a + 100}`).innerText.length == 0) {
+                        document.getElementById(`b${a + 100}`).style.backgroundColor = 'green'
                     }
 
-                    if (aside < 8 && document.getElementById('b${a + 100 + 1}').innerText.length !== 0) {
-                        document.getElementById('b${a + 100 + 1}').style.backgroundColor = 'green'
+                    if (aside < 8 && document.getElementById(`b${a + 100 + 1}`).innerText.length !== 0) {
+                        document.getElementById(`b${a + 100 + 1}`).style.backgroundColor = 'green'
                     }
 
-                    if (aside > 1 && document.getElementById('b${a + 100 - 1}').innerText.length !== 0) {
-                        document.getElementById('b${a + 100 - 1}').style.backgroundColor = 'green'
+                    if (aside > 1 && document.getElementById(`b${a + 100 - 1}`).innerText.length !== 0) {
+                        document.getElementById(`b${a + 100 - 1}`).style.backgroundColor = 'green'
+
                     }
+                }
 
                 if (tog % 2 == 0 && aup > 100) {
 
@@ -134,14 +178,14 @@ function insertImage() {
                     }
                     if (aside > 1 && document.getElementById(`b${a - 100 - 1}`).innerText.length !== 0) {
                         document.getElementById(`b${a - 100 - 1}`).style.backgroundColor = 'green'
+
                     }
                 }
 
 
-                }
             }
 
-            //KING
+            // KING
 
             if (item.innerText == `${toggle}king`) {
 
@@ -183,6 +227,7 @@ function insertImage() {
                 item.style.backgroundColor = 'red'
 
             }
+
 
             // ROOK
 
@@ -430,6 +475,7 @@ function insertImage() {
             }
         }
 
+
         // Toggling the turn
 
         if (tog % 2 !== 0) {
@@ -443,74 +489,86 @@ function insertImage() {
 
         colorRed()
 
-        //Win Condition
+
+
+        // winning()
 
         numOfKings = 0
+
 
         document.querySelectorAll('.box').forEach(win => {
             if (win.innerText == 'Wking' || win.innerText == 'Bking') {
                 numOfKings += 1
             }
+
         })
 
         if (numOfKings == 1) {
             setTimeout(() => {
+                // console.log(`${toggle}`) 
                 if (tog % 2 == 0) {
-                    alert('White Wins!')
+                    alert('White Wins !!')
                     location.reload()
                 }
                 else if (tog % 2 !== 0) {
-                    alert('Black Wins!')
+                    alert('Black Wins !!')
                     location.reload()
                 }
             }, 100)
         }
+
+
+
     })
 
-    // Moving the element
-    document.querySelectorAll('.box').forEach(hathiTest => {
+})
 
-        hathiTest.addEventListener('click', function () {
 
-            if (hathiTest.style.backgroundColor == 'pink') {
 
-                pinkId = hathiTest.id
-                pinkText = hathiTest.innerText
 
-                document.querySelectorAll('.box').forEach(hathiTest2 => {
 
-                    hathiTest2.addEventListener('click', function () {
-                        if (hathiTest2.style.backgroundColor == 'green' && hathiTest2.innerText.length == 0) {
-                            document.getElementById(pinkId).innerText = ''
-                            hathiTest2.innerText = pinkText
-                            coloring()
-                            insertImage()
+// Moving the element
+document.querySelectorAll('.box').forEach(hathiTest => {
 
-                        }
+    hathiTest.addEventListener('click', function () {
 
-                    })
+        if (hathiTest.style.backgroundColor == 'red') {
+
+            redId = hathiTest.id
+            redText = hathiTest.innerText
+
+            document.querySelectorAll('.box').forEach(hathiTest2 => {
+
+                hathiTest2.addEventListener('click', function () {
+                    if (hathiTest2.style.backgroundColor == 'green' && hathiTest2.innerText.length == 0) {
+                        document.getElementById(redId).innerText = ''
+                        hathiTest2.innerText = redText
+                        coloring()
+                        insertImage()
+
+                    }
+
                 })
+            })
 
-            }
-
-        })
+        }
 
     })
 
+})
 
 
 
 
 
-    // Prvents from selecting multiple elements
-    z = 0
-    document.querySelectorAll('.box').forEach(ee => {
-        ee.addEventListener('click', function () {
-            z = z + 1
-            if (z % 2 == 0 && ee.style.backgroundColor !== 'green') {
-                coloring()
-            }
-        })
+
+// Prvents from selecting multiple elements
+z = 0
+document.querySelectorAll('.box').forEach(ee => {
+    ee.addEventListener('click', function () {
+        z = z + 1
+        if (z % 2 == 0 && ee.style.backgroundColor !== 'green') {
+            coloring()
+        }
     })
-
-}
+})
