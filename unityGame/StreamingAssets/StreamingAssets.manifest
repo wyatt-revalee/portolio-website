@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 2741617751
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: webglbundle
+      Dependencies: {}
