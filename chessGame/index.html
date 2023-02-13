@@ -28,30 +28,25 @@
             text-align: left;
             font-family: monospace;
             font-size: 12px;
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             border: black solid 1px;
         }
 
-        .grid-container>img {
-            width: 50px;
-            height: 50px;
-        }
-
         .cell>img {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             display: flex;
             justify-content: center;
             text-align: center;
             margin: auto;
-            padding-top: 5px;
+            padding-top: 15px;
         }
     </style>
 
     <script>
-        const COLS = ['1','2','3','4','5','6','7','8']
-        const ROWS = ['8', '7', '6', '5', '4', '3', '2', '1']
+        const COLS = ['7', '6', '5', '4', '3', '2', '1', '0']
+        const ROWS = ['7', '6', '5', '4', '3', '2', '1','0']
 
 
         window.addEventListener('load', (event) => {
@@ -69,8 +64,8 @@
             for (let i = 0; i < ROWS.length; i++) {
                 if (i % 2 == 1) color = 1
                 else color = 0
-                for (let j = 0; j < COLS.length; j++) {
-                    ch = COLS[j] + ROWS[i]
+                for (let j = COLS.length-1; j >= 0; j--) {
+                    ch = COLS[i] + ROWS[j]
                     let item = new Cell(ch)
                     if (color % 2 == 0)
                         item.div.style.backgroundColor = "black"
@@ -79,20 +74,9 @@
                 }
             }
 
-            for(let i = 0; i < COLS.length; i++){
-                for(let j = 0; j < ROWS.length; j++){
-                    let cell = new Spot(j, i, "Wpawn")
-                }
-            }
+            initializeGame()
 
-            var Wking = new King(true)
-            var newSpot = new Spot(4, 4, Wking)
-            console.log(newSpot.piece)
-
-            board = new Board()
-            board.resetBoard()
-            console.log(board)
-
+            
         })
 
     class Spot {
@@ -283,13 +267,10 @@
 
     class Board {
         constructor() {
-            this.boxes = [[], []]
-            }
+            this.boxes = [[], [], [], [], [], [], [], []]
         }
 
-        
-
-        Board() {
+        board() {
             this.resetBoard()
         }
 
@@ -321,28 +302,29 @@
             this.boxes[1][6] = new Spot(1, 6, new Pawn(true))
             this.boxes[1][7] = new Spot(1, 7, new Pawn(true))
 
+            
             // Initialize black pieces
-            this.boxes[7][0] = new Spot(0, 0, new Rook(true))
-            this.boxes[7][1] = new Spot(0, 1, new Knight(true))
-            this.boxes[7][2] = new Spot(0, 2, new Bishop(true))
-            this.boxes[7][3] = new Spot(0, 3, new Queen(true))
-            this.boxes[7][4] = new Spot(0, 4, new King(true))
-            this.boxes[7][5] = new Spot(0, 5, new Bishop(true))
-            this.boxes[7][6] = new Spot(0, 6, new Knight(true))
-            this.boxes[7][7] = new Spot(0, 7, new Rook(true))
+            this.boxes[7][0] = new Spot(0, 0, new Rook(false))
+            this.boxes[7][1] = new Spot(0, 1, new Knight(false))
+            this.boxes[7][2] = new Spot(0, 2, new Bishop(false))
+            this.boxes[7][3] = new Spot(0, 3, new Queen(false))
+            this.boxes[7][4] = new Spot(0, 4, new King(false))
+            this.boxes[7][5] = new Spot(0, 5, new Bishop(false))
+            this.boxes[7][6] = new Spot(0, 6, new Knight(false))
+            this.boxes[7][7] = new Spot(0, 7, new Rook(false))
 
-            this.boxes[6][0] = new Spot(1, 0, new Pawn(true))
-            this.boxes[6][1] = new Spot(1, 1, new Pawn(true))
-            this.boxes[6][2] = new Spot(1, 2, new Pawn(true))
-            this.boxes[6][3] = new Spot(1, 3, new Pawn(true))
-            this.boxes[6][4] = new Spot(1, 4, new Pawn(true))
-            this.boxes[6][5] = new Spot(1, 5, new Pawn(true))
-            this.boxes[6][6] = new Spot(1, 6, new Pawn(true))
-            this.boxes[6][7] = new Spot(1, 7, new Pawn(true))
+            this.boxes[6][0] = new Spot(1, 0, new Pawn(false))
+            this.boxes[6][1] = new Spot(1, 1, new Pawn(false))
+            this.boxes[6][2] = new Spot(1, 2, new Pawn(false))
+            this.boxes[6][3] = new Spot(1, 3, new Pawn(false))
+            this.boxes[6][4] = new Spot(1, 4, new Pawn(false))
+            this.boxes[6][5] = new Spot(1, 5, new Pawn(false))
+            this.boxes[6][6] = new Spot(1, 6, new Pawn(false))
+            this.boxes[6][7] = new Spot(1, 7, new Pawn(false))
 
             // Initialize remaining boxes as empty
-            for(let i = 2; i < 6; i++) {
-                for(let j = 0; j < 8; j++) {
+            for (let i = 2; i < 6; i++) {
+                for (let j = 0; j < 8; j++) {
                     this.boxes[i][j] = new Spot(i, j, null)
                 }
             }
@@ -405,20 +387,27 @@
     // }
 
     class Game {
-        constructor(players, board, currentTurn, status, movesPlayed) {
-            players[0] = p1
-            players[1] = p2
-            
+        constructor(players, board, status) {
+            this.players = players
+            this.board = board
+            this.status = status
+            this.movesPlayed = []
+        }
+
+        initialize(p1, p2) {
+            this.players[0] = p1
+            this.players[1] = p2
+
             board.resetBoard()
 
-            if(p1.whiteSide) {
+            if (p1.whiteSide) {
                 this.currentTurn = p1
             }
             else {
                 this.currentTurn = p2
             }
 
-            movesPlayed.clear()
+            this.movesPlayed = []
         }
 
         get isEnd() {
@@ -486,6 +475,43 @@
                 this.currentTurn = players[0]
             }
             return true
+        }
+    }
+
+    function initializeGame() {
+        board = new Board()
+        let p1 = new HumanPlayer(true)
+        let p2 = new HumanPlayer(false)
+        var players = [p1, p2]
+        moves = []
+        game = new Game(players, board, 'ACTIVE', moves)
+        game.initialize(p1, p2)
+        console.log(game)
+
+        updateBoard()
+    }
+
+    function updateBoard() {
+        var color = 'B'
+        var piece
+
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                id = i.toString() + j.toString()
+                if (board.boxes[i][j].spotPiece != null) {
+                    if (board.boxes[i][j].spotPiece.whiteOrBlack) {
+                        color = 'W'
+                    }
+                    else {
+                        color = 'B'
+                    }
+                    piece = color + board.boxes[i][j].spotPiece.constructor.name.toLowerCase()
+                    let pieceImg = document.createElement('img')
+                    pieceImg.src = `images/${piece}.png`
+                    let square = document.getElementById(id)
+                    square.appendChild(pieceImg)
+                }
+            }
         }
     }
 
