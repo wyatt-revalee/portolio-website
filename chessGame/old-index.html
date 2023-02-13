@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Chess
+    </title>
+
+    <style>
+
+    #main-title {
+        text-align: center;
+    }
+
+    #turn-announcer {
+        text-align: center;
+    }
+    
+    .grid-container {
+        margin-top: 2%;
+        display: grid;
+        grid-template: auto / auto auto auto auto auto auto auto auto;
+        justify-content: center;
+    }
+    .grid-container > div {
+        text-align: left;
+        font-family: monospace;
+        font-size: 12px;
+        width: 60px;
+        height: 60px;
+        border: black solid 1px;
+    }
+
+    .grid-container > img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .cell > img {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        margin: auto;
+        padding-top: 5px;
+    }
+
+
+    </style>
+
+    <script>
+
+    const COLS = ['a','b','c','d','e','f','g','h']
+    const ROWS = ['8','7','6','5','4','3','2','1']
+
+
+    window.addEventListener('load', (event) => {
+        const gridcont = document.querySelector('.grid-container')
+        
+        class Piece {
+            constructor(color, type) {
+                this.pieceName = color + type
+                this.image = document.createElement('img')
+                this.image.src = `images/${this.pieceName}.png`
+
+            }
+        }
+
+        class Cell {
+            constructor(ch) {
+                this.div = document.createElement('div')
+                this.div.className = "cell"
+                this.div.setAttribute("id", ch)
+            }
+        }
+        var color = 0
+        for(let i = 0; i < ROWS.length; i++) {
+            if(i % 2 == 1) color = 1
+            else color = 0
+            for(let j = 0; j < COLS.length; j++){
+                ch = COLS[j] + ROWS[i]
+                let item = new Cell(ch)
+                if(color % 2 == 0)
+                    item.div.style.backgroundColor = "black"
+                gridcont.appendChild(item.div)
+                color++
+            }
+        }
+
+        var testpiece = new Piece('W', 'pawn')
+        var a5 = document.getElementById('a5')
+        a5.appendChild(testpiece)
+
+
+    })
+
+    </script>
+
+</head>
+<h1 id ="main-title">Chess</h1>
+<h2 id="turn-announcer">White's Turn</h2>
+<body>
+    <div class='board'>
+        <div class='grid-container'>
+        </div>
+    </div>
+</body>
+
+</html>

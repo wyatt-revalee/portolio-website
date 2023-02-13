@@ -9,79 +9,492 @@
     </title>
 
     <style>
+        #main-title {
+            text-align: center;
+        }
 
-    #main-title {
-        text-align: center;
-    }
+        #turn-announcer {
+            text-align: center;
+        }
 
-    #turn-announcer {
-        text-align: center;
-    }
-    
-    .grid-container {
-        margin-top: 2%;
-        display: grid;
-        grid-template: auto / auto auto auto auto auto auto auto auto;
-        justify-content: center;
-    }
-    .grid-container > div {
-        text-align: left;
-        font-family: monospace;
-        font-size: 12px;
-        width: 60px;
-        height: 60px;
-        border: black solid 1px;
-    }
+        .grid-container {
+            margin-top: 2%;
+            display: grid;
+            grid-template: auto / auto auto auto auto auto auto auto auto;
+            justify-content: center;
+        }
 
+        .grid-container>div {
+            text-align: left;
+            font-family: monospace;
+            font-size: 12px;
+            width: 60px;
+            height: 60px;
+            border: black solid 1px;
+        }
+
+        .grid-container>img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .cell>img {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            margin: auto;
+            padding-top: 5px;
+        }
     </style>
 
     <script>
+        const COLS = ['1','2','3','4','5','6','7','8']
+        const ROWS = ['8', '7', '6', '5', '4', '3', '2', '1']
 
-    const COLS = ['a','b','c','d','e','f','g','h']
-    const ROWS = ['8','7','6','5','4','3','2','1']
 
+        window.addEventListener('load', (event) => {
+            const gridcont = document.querySelector('.grid-container')
 
-    window.addEventListener('load', (event) => {
-        const gridcont = document.querySelector('.grid-container')
-    
-
-        class Cell {
-            constructor(ch) {
-                this.div = document.createElement('div')
-                this.div.className = "cell"
-                if(ch[0] == 'a')
-                    this.div.innerHTML = ch[1]
-                if(ch[1] == '1')
-                    this.div.innerHTML = ch[0]
-                if(ch == 'a1')
-                    this.div.innerHTML = ch
-                this.coordinate = ch
+            class Cell {
+                constructor(ch) {
+                    this.div = document.createElement('div')
+                    this.div.className = "cell"
+                    this.div.setAttribute("id", ch)
+                }
+            } 
+            // Create board
+            var color = 0
+            for (let i = 0; i < ROWS.length; i++) {
+                if (i % 2 == 1) color = 1
+                else color = 0
+                for (let j = 0; j < COLS.length; j++) {
+                    ch = COLS[j] + ROWS[i]
+                    let item = new Cell(ch)
+                    if (color % 2 == 0)
+                        item.div.style.backgroundColor = "black"
+                    gridcont.appendChild(item.div)
+                    color++
+                }
             }
-        }
 
-        for(let i = 0; i < ROWS.length; i++) {
-            for(let j = 0; j < COLS.length; j++){
-                ch = COLS[j] + ROWS[i]
-                let item = new Cell(ch)
-                gridcont.appendChild(item.div)
+            for(let i = 0; i < COLS.length; i++){
+                for(let j = 0; j < ROWS.length; j++){
+                    let cell = new Spot(j, i, "Wpawn")
+                }
             }
-        }
 
-        insertImage()
+            var Wking = new King(true)
+            var newSpot = new Spot(4, 4, Wking)
+            console.log(newSpot.piece)
 
-    })
+            board = new Board()
+            board.resetBoard()
+            console.log(board)
 
-    function insertImage() {
-        document.querySelectorAll('.cell').forEach(image => {
-            
         })
+
+    class Spot {
+        constructor(xCord, yCord, piectToSet) {
+            this.piece = piectToSet
+            this.x = xCord
+            this.y = yCord
+        }
+
+         get spotPiece() {
+            return this.piece;
+        }
+
+        set spotPiece(newPiece) {
+            this.piece = newPiece;
+        }
+
+        get xpos() {
+            return this.x;
+        }
+
+        set xpos(newXPos) {
+            this.x = newXPos;
+        }
+
+        get ypos() {
+            return this.y;
+        }
+
+        set ypos(newYPos) {
+            this.y = newYPos;
+        }
+    }
+
+    class Piece {
+        constructor(isWhite){
+            if(this.constructor === Piece) {
+                throw new error("Can't instantiate abstract class!")
+            }
+            this.killed = false
+            this.white = isWhite
+        }
+
+        set whiteOrBlack(worb) {
+            this.white = worb
+        }
+
+        get whiteOrBlack() {
+            return this.white
+        }
+
+        set hasBeenKilled(hbk) {
+            this.killed = hbk
+        }
+
+        get hasBeenKilled() {
+            return this.killed
+        }
+    }
+
+    class King extends Piece {
+        constructor(isWhite) {
+            super(isWhite)
+            this.castlingDone = false
+        }
+
+        set isCastlingDone(castlingDone) {
+            this.castlingDone = castlingDone
+        }
+
+        get isCastlingDone() {
+            return this.castlingDone
+        }
+
+        canMove(board, start, end) {
+
+            // If the destination holds a piece of the same color, we can't move there
+            if(end.spotPiece().whiteOrBlack() == this.whiteOrBlack()) {
+                return false
+            }
+
+            let x = Math.abs(start.xpos() - end.xpos())
+            let y = Math.abs(start.ypos() - end.ypos())
+            if(x + y == 1) {
+                // check if move wil not result in king being attacked
+                // if so, return true
+                return true
+            }
+            return this.isValidCastling(board, start, end);
+        }
+
+        isValidCastling(board, start, end) {
+            if(this.isCastlingDone()) {
+                return false
+            }
+            // Logic for returning true or false
+        }
+
+        isCastlingMove(start, end) {
+            //check if starting and ending position are correct
+        }
+    }
+
+    class Queen extends Piece {
+        constructor(isWhite) {
+            super(isWhite)
+        }
+
+        canMove(board, start, end) {
+            // If the destination holds a piece of the same color, we can't move there
+            if (end.spotPiece().whiteOrBlack() == this.whiteOrBlack()) {
+                return false
+            }
+
+            let x = Math.abs(start.xpos() - end.xpos())
+            let y = Math.abs(start.ypos() - end.ypos())
+            return x * y == 2
+        }
+    }
+
+    class Knight extends Piece {
+        constructor(isWhite) {
+            super(isWhite)
+        }
+
+        canMove(board, start, end) {
+            // If the destination holds a piece of the same color, we can't move there
+            if (end.spotPiece().whiteOrBlack() == this.whiteOrBlack()) {
+                return false
+            }
+
+            let x = Math.abs(start.xpos() - end.xpos())
+            let y = Math.abs(start.ypos() - end.ypos())
+            return x * y == 2
+        }
+    }
+
+    class Bishop extends Piece {
+        constructor(isWhite) {
+            super(isWhite)
+        }
+
+        canMove(board, start, end) {
+            // If the destination holds a piece of the same color, we can't move there
+            if (end.spotPiece().whiteOrBlack() == this.whiteOrBlack()) {
+                return false
+            }
+
+            let x = Math.abs(start.xpos() - end.xpos())
+            let y = Math.abs(start.ypos() - end.ypos())
+            return x * y == 2
+        }
+    }
+
+    class Rook extends Piece {
+        constructor(isWhite) {
+            super(isWhite)
+        }
+
+        canMove(board, start, end) {
+            // If the destination holds a piece of the same color, we can't move there
+            if (end.spotPiece().whiteOrBlack() == this.whiteOrBlack()) {
+                return false
+            }
+
+            let x = Math.abs(start.xpos() - end.xpos())
+            let y = Math.abs(start.ypos() - end.ypos())
+            return x * y == 2
+        }
+    }
+
+    class Pawn extends Piece {
+        constructor(isWhite) {
+            super(isWhite)
+        }
+
+        canMove(board, start, end) {
+            // If the destination holds a piece of the same color, we can't move there
+            if (end.spotPiece().whiteOrBlack() == this.whiteOrBlack()) {
+                return false
+            }
+
+            let x = Math.abs(start.xpos() - end.xpos())
+            let y = Math.abs(start.ypos() - end.ypos())
+            return x * y == 2
+        }
+    }
+
+    class Board {
+        constructor() {
+            this.boxes = [[], []]
+            }
+        }
+
+        
+
+        Board() {
+            this.resetBoard()
+        }
+
+        getBox(x, y) {
+            if (x < 0 || x > 7 || y < 0 || y > 7) {
+                throw new Exception("Index out of bound");
+            }
+            return boxes[x][y]
+        }
+
+        resetBoard() {
+
+            // Initialize white pieces
+            this.boxes[0][0] = new Spot(0, 0, new Rook(true))
+            this.boxes[0][1] = new Spot(0, 1, new Knight(true))
+            this.boxes[0][2] = new Spot(0, 2, new Bishop(true))
+            this.boxes[0][3] = new Spot(0, 3, new Queen(true))
+            this.boxes[0][4] = new Spot(0, 4, new King(true))
+            this.boxes[0][5] = new Spot(0, 5, new Bishop(true))
+            this.boxes[0][6] = new Spot(0, 6, new Knight(true))
+            this.boxes[0][7] = new Spot(0, 7, new Rook(true))
+
+            this.boxes[1][0] = new Spot(1, 0, new Pawn(true))
+            this.boxes[1][1] = new Spot(1, 1, new Pawn(true))
+            this.boxes[1][2] = new Spot(1, 2, new Pawn(true))
+            this.boxes[1][3] = new Spot(1, 3, new Pawn(true))
+            this.boxes[1][4] = new Spot(1, 4, new Pawn(true))
+            this.boxes[1][5] = new Spot(1, 5, new Pawn(true))
+            this.boxes[1][6] = new Spot(1, 6, new Pawn(true))
+            this.boxes[1][7] = new Spot(1, 7, new Pawn(true))
+
+            // Initialize black pieces
+            this.boxes[7][0] = new Spot(0, 0, new Rook(true))
+            this.boxes[7][1] = new Spot(0, 1, new Knight(true))
+            this.boxes[7][2] = new Spot(0, 2, new Bishop(true))
+            this.boxes[7][3] = new Spot(0, 3, new Queen(true))
+            this.boxes[7][4] = new Spot(0, 4, new King(true))
+            this.boxes[7][5] = new Spot(0, 5, new Bishop(true))
+            this.boxes[7][6] = new Spot(0, 6, new Knight(true))
+            this.boxes[7][7] = new Spot(0, 7, new Rook(true))
+
+            this.boxes[6][0] = new Spot(1, 0, new Pawn(true))
+            this.boxes[6][1] = new Spot(1, 1, new Pawn(true))
+            this.boxes[6][2] = new Spot(1, 2, new Pawn(true))
+            this.boxes[6][3] = new Spot(1, 3, new Pawn(true))
+            this.boxes[6][4] = new Spot(1, 4, new Pawn(true))
+            this.boxes[6][5] = new Spot(1, 5, new Pawn(true))
+            this.boxes[6][6] = new Spot(1, 6, new Pawn(true))
+            this.boxes[6][7] = new Spot(1, 7, new Pawn(true))
+
+            // Initialize remaining boxes as empty
+            for(let i = 2; i < 6; i++) {
+                for(let j = 0; j < 8; j++) {
+                    this.boxes[i][j] = new Spot(i, j, null)
+                }
+            }
+        }
+    }
+
+    class Player {
+        constructor(isWhiteSide, isHuman) {
+            this.whiteSide = isWhiteSide
+            this.humanPlayer = isHuman
+        }
+
+        get isWhite() {
+            return this.whiteSide
+        }
+
+        get isHumanPlayer() {
+            return this.humanPlayer
+        }
+    }
+
+    class HumanPlayer extends Player {
+        constructor(isWhiteSide) {
+            super(isWhiteSide)
+            this.humanPlayer = true
+        }
+    }
+
+    class ComputerPlayer extends Player {
+        constructor(isWhiteSide) {
+            super(isWhiteSide)
+            this.humanPlayer = false
+        }
+    }
+
+    class Move {
+        constructor(player, start, end, pieceMoved, pieceKilled, castlingMove) {
+            this.player = player
+            this.start = start
+            this.end = end
+            this.pieceMoved = start.spotPiece
+        }
+
+        get isCaslingMove() {
+            return this.castlingMove
+        }
+
+        set isCaslingMove(castlingMove) {
+            this.castlingMove = castlingMove
+        }
+    }
+    
+    // const GameStatus {
+    //     ACTIVE = "ACTIVE",
+    //     BLACK_WIN = "BLACK_WIN",
+    //     WHITE_WIN = "WHITE_WIN",
+    //     FORFEIT = "FORFEIT",
+    //     STALEMATE = "STALEMATE",
+    //     RESIGNATION = "RESIGNATION"
+    // }
+
+    class Game {
+        constructor(players, board, currentTurn, status, movesPlayed) {
+            players[0] = p1
+            players[1] = p2
+            
+            board.resetBoard()
+
+            if(p1.whiteSide) {
+                this.currentTurn = p1
+            }
+            else {
+                this.currentTurn = p2
+            }
+
+            movesPlayed.clear()
+        }
+
+        get isEnd() {
+            return this.getStatus() != GameStatus.ACTIVE
+        }
+
+        get Status() {
+            return this.status
+        }
+
+        set Status(currentStatus) {
+            this.status = currentStatus
+        }
+
+        playerMove(player, startX, startY, endX, endY) {
+            startBox = board.getBox(startX, startY)
+            endBox = board.getBox(endX, endY)
+            move = new Move(player, startBox, endBox)
+            return this.makeMove(move, player)
+        }
+
+        makeMove(move, player) {
+            sourcePiece = move.getStart().getPiece()
+            if(sourcePiece == null) {
+                return false
+            }
+
+            // valid player
+            if(player != currentTurn) {
+                return false
+            }
+
+            if(sourcePiece.white != player.whiteSide) {
+                return false
+            }
+
+            // valid move?
+            if(!sourcePiece.canMove(board,move.getStart(), move.getEnd())) {
+                return false
+            }
+
+            // kill?
+            destPiece = move.getStart().spotPiece()
+            if (destPiece != null) {
+                destPiece.hasBeenKilled(true)
+                move.setPieceKilled(destPiece)
+            }
+
+            // castling?
+            if(sourcePiece != null && sourcePiece instanceof King && sourcePiece.isCaslingMove) {
+                move.setCastlingMove(true)
+            }
+
+            // store the move
+            movesPlayed.add(move)
+
+            // move piece from the start box to the end box
+            move.getEnd().setPiece(move.getStart().getPiece())
+            move.getStart.getPiece(null)
+
+            if (this.currentTurn == players[0]) {
+                this.currentTurn = players[1]
+            }
+            else {
+                this.currentTurn = players[0]
+            }
+            return true
+        }
     }
 
     </script>
 
 </head>
-<h1 id ="main-title">Chess</h1>
+<h1 id="main-title">Chess</h1>
 <h2 id="turn-announcer">White's Turn</h2>
+
 <body>
     <div class='board'>
         <div class='grid-container'>
