@@ -47,16 +47,23 @@
     <script>
         const COLS = ['7', '6', '5', '4', '3', '2', '1', '0']
         const ROWS = ['7', '6', '5', '4', '3', '2', '1','0']
+        const NTOA = ['A','B','C','D','E','F','G','H']
+        var p1
+        var p2
+        var turn = 0
 
 
         window.addEventListener('load', (event) => {
             const gridcont = document.querySelector('.grid-container')
 
             class Cell {
-                constructor(ch) {
+                constructor(id) {
+                    this.id = id
                     this.div = document.createElement('div')
                     this.div.className = "cell"
-                    this.div.setAttribute("id", ch)
+                    this.div.setAttribute("id", id)
+                    this.div.addEventListener('click', activatePiece, false)
+
                 }
             } 
             // Create board
@@ -78,12 +85,35 @@
 
             
         })
+    
+    var startSpot = null
+    var currentCell
+    var origColor
+    var playerToMove = null
+    
+    function activatePiece() {
+        playerToMove = game.currentTurn
+        let id = this.id
+        if(startSpot == null) {
+            startSpot = id
+            currentCell = document.getElementById(id)
+            origColor = currentCell.style.backgroundColor //store original color to set later
+            currentCell.style.backgroundColor = "green" //set active square to green
+        }
+        else {
+            let endSpot = id
+            game.playerMove(playerToMove, startSpot[0], startSpot[1], endSpot[0], endSpot[1])
+            startSpot = null
+            currentCell.style.backgroundColor = origColor // Once move has been made, return square to original color
+        }
+    }
 
     class Spot {
         constructor(xCord, yCord, piectToSet) {
             this.piece = piectToSet
             this.x = xCord
             this.y = yCord
+            this.pos = this.x.toString() + ',' + this.y.toString()
         }
 
          get spotPiece() {
@@ -108,6 +138,10 @@
 
         set ypos(newYPos) {
             this.y = newYPos;
+        }
+
+        get xypos() {
+            return this.pos
         }
     }
 
@@ -154,13 +188,14 @@
         canMove(board, start, end) {
 
             // If the destination holds a piece of the same color, we can't move there
-            if(end.spotPiece().whiteOrBlack() == this.whiteOrBlack()) {
+            if (end.spotPiece != null && end.spotPiece.whiteOrBlack == this.whiteOrBlack) {
                 return false
             }
 
-            let x = Math.abs(start.xpos() - end.xpos())
-            let y = Math.abs(start.ypos() - end.ypos())
-            if(x + y == 1) {
+            let x = Math.abs(start.xpos - end.xpos)
+            let y = Math.abs(start.ypos - end.ypos)
+            console.log(x, y)
+            if(x + y == 1 || (x == 1 && y == 1)) {
                 // check if move wil not result in king being attacked
                 // if so, return true
                 return true
@@ -169,7 +204,7 @@
         }
 
         isValidCastling(board, start, end) {
-            if(this.isCastlingDone()) {
+            if(this.isCastlingDone) {
                 return false
             }
             // Logic for returning true or false
@@ -187,16 +222,15 @@
 
         canMove(board, start, end) {
             // If the destination holds a piece of the same color, we can't move there
-            if (end.spotPiece().whiteOrBlack() == this.whiteOrBlack()) {
+            if (end.spotPiece != null && end.spotPiece.whiteOrBlack == this.whiteOrBlack) {
                 return false
             }
 
-            let x = Math.abs(start.xpos() - end.xpos())
-            let y = Math.abs(start.ypos() - end.ypos())
-            return x * y == 2
+            let x = Math.abs(start.xpos - end.xpos)
+            let y = Math.abs(start.ypos - end.ypos)
+            return (x == y) || ((x && !y) || (!x && y))
         }
     }
-
     class Knight extends Piece {
         constructor(isWhite) {
             super(isWhite)
@@ -204,12 +238,12 @@
 
         canMove(board, start, end) {
             // If the destination holds a piece of the same color, we can't move there
-            if (end.spotPiece().whiteOrBlack() == this.whiteOrBlack()) {
+            if (end.spotPiece != null && end.spotPiece.whiteOrBlack == this.whiteOrBlack) {
                 return false
             }
 
-            let x = Math.abs(start.xpos() - end.xpos())
-            let y = Math.abs(start.ypos() - end.ypos())
+            let x = Math.abs(start.xpos - end.xpos)
+            let y = Math.abs(start.ypos - end.ypos)
             return x * y == 2
         }
     }
@@ -221,47 +255,82 @@
 
         canMove(board, start, end) {
             // If the destination holds a piece of the same color, we can't move there
-            if (end.spotPiece().whiteOrBlack() == this.whiteOrBlack()) {
+            if (end.spotPiece != null && end.spotPiece.whiteOrBlack == this.whiteOrBlack) {
                 return false
             }
 
-            let x = Math.abs(start.xpos() - end.xpos())
-            let y = Math.abs(start.ypos() - end.ypos())
-            return x * y == 2
+            let x = Math.abs(start.xpos - end.xpos)
+            let y = Math.abs(start.ypos - end.ypos)
+            if(diagonalPathIsClear(start, end))
+                return x == y
+            else
+                return false
         }
     }
 
     class Rook extends Piece {
         constructor(isWhite) {
             super(isWhite)
+            this.hasMoved = false
         }
 
         canMove(board, start, end) {
             // If the destination holds a piece of the same color, we can't move there
-            if (end.spotPiece().whiteOrBlack() == this.whiteOrBlack()) {
+            if (end.spotPiece != null && end.spotPiece.whiteOrBlack == this.whiteOrBlack) {
                 return false
             }
 
-            let x = Math.abs(start.xpos() - end.xpos())
-            let y = Math.abs(start.ypos() - end.ypos())
-            return x * y == 2
+            let x = Math.abs(start.xpos - end.xpos)
+            let y = Math.abs(start.ypos - end.ypos)
+            if((x && !y) || (!x && y)) {
+                if(straightPathIsClear(start, end)){
+                    this.hasMoved = true
+                    return true
+                }
+                else
+                    return false
+            }
         }
     }
 
     class Pawn extends Piece {
         constructor(isWhite) {
             super(isWhite)
+            this.hasMoved = false
         }
 
         canMove(board, start, end) {
             // If the destination holds a piece of the same color, we can't move there
-            if (end.spotPiece().whiteOrBlack() == this.whiteOrBlack()) {
+            if (end.spotPiece != null && end.spotPiece.whiteOrBlack == this.whiteOrBlack) {
                 return false
             }
 
-            let x = Math.abs(start.xpos() - end.xpos())
-            let y = Math.abs(start.ypos() - end.ypos())
-            return x * y == 2
+            // Don't allow either color of pawn to move backwards
+            if(this.whiteOrBlack && (end.xpos < start.xpos))
+                return false
+            if(!this.whiteOrBlack && (end.xpos > start.xpos))
+                return false
+
+
+            let x = Math.abs(start.xpos - end.xpos)
+            let y = Math.abs(start.ypos - end.ypos)
+
+            if(board.boxes[end.xpos][end.ypos].spotPiece != null && (x == 1 && y == 1)){ // Allow diagonal attack
+                this.hasMoved = true
+                return true
+            }
+
+            if(this.hasMoved == false) { // If pawn hasn't moved, allow to move forward 2 spaces
+                if((x == 1 && y == 0) || (x == 2 && y == 0)) {
+                    if(straightPathIsClear(start, end))
+                    this.hasMoved = true
+                    return true
+                }
+            }
+            if(straightPathIsClear(start, end))
+                return x == 1 && y == 0
+            else
+                return false
         }
     }
 
@@ -278,7 +347,7 @@
             if (x < 0 || x > 7 || y < 0 || y > 7) {
                 throw new Exception("Index out of bound");
             }
-            return boxes[x][y]
+            return this.boxes[x][y]
         }
 
         resetBoard() {
@@ -304,23 +373,23 @@
 
             
             // Initialize black pieces
-            this.boxes[7][0] = new Spot(0, 0, new Rook(false))
-            this.boxes[7][1] = new Spot(0, 1, new Knight(false))
-            this.boxes[7][2] = new Spot(0, 2, new Bishop(false))
-            this.boxes[7][3] = new Spot(0, 3, new Queen(false))
-            this.boxes[7][4] = new Spot(0, 4, new King(false))
-            this.boxes[7][5] = new Spot(0, 5, new Bishop(false))
-            this.boxes[7][6] = new Spot(0, 6, new Knight(false))
-            this.boxes[7][7] = new Spot(0, 7, new Rook(false))
+            this.boxes[7][0] = new Spot(7, 0, new Rook(false))
+            this.boxes[7][1] = new Spot(7, 1, new Knight(false))
+            this.boxes[7][2] = new Spot(7, 2, new Bishop(false))
+            this.boxes[7][3] = new Spot(7, 3, new Queen(false))
+            this.boxes[7][4] = new Spot(7, 4, new King(false))
+            this.boxes[7][5] = new Spot(7, 5, new Bishop(false))
+            this.boxes[7][6] = new Spot(7, 6, new Knight(false))
+            this.boxes[7][7] = new Spot(7, 7, new Rook(false))
 
-            this.boxes[6][0] = new Spot(1, 0, new Pawn(false))
-            this.boxes[6][1] = new Spot(1, 1, new Pawn(false))
-            this.boxes[6][2] = new Spot(1, 2, new Pawn(false))
-            this.boxes[6][3] = new Spot(1, 3, new Pawn(false))
-            this.boxes[6][4] = new Spot(1, 4, new Pawn(false))
-            this.boxes[6][5] = new Spot(1, 5, new Pawn(false))
-            this.boxes[6][6] = new Spot(1, 6, new Pawn(false))
-            this.boxes[6][7] = new Spot(1, 7, new Pawn(false))
+            this.boxes[6][0] = new Spot(6, 0, new Pawn(false))
+            this.boxes[6][1] = new Spot(6, 1, new Pawn(false))
+            this.boxes[6][2] = new Spot(6, 2, new Pawn(false))
+            this.boxes[6][3] = new Spot(6, 3, new Pawn(false))
+            this.boxes[6][4] = new Spot(6, 4, new Pawn(false))
+            this.boxes[6][5] = new Spot(6, 5, new Pawn(false))
+            this.boxes[6][6] = new Spot(6, 6, new Pawn(false))
+            this.boxes[6][7] = new Spot(6, 7, new Pawn(false))
 
             // Initialize remaining boxes as empty
             for (let i = 2; i < 6; i++) {
@@ -368,6 +437,14 @@
             this.pieceMoved = start.spotPiece
         }
 
+        get moveStart() {
+            return this.start
+        }
+
+        get moveEnd() {
+            return this.end
+        }
+
         get isCaslingMove() {
             return this.castlingMove
         }
@@ -375,6 +452,16 @@
         set isCaslingMove(castlingMove) {
             this.castlingMove = castlingMove
         }
+
+        setPieceKilled(white, piece) {
+            let color = null
+            if(white)
+                color = "White"
+            else
+                color = "Black"
+            console.log(`${color} ${piece.constructor.name} has been killed.`)
+        }
+
     }
     
     // const GameStatus {
@@ -423,37 +510,42 @@
         }
 
         playerMove(player, startX, startY, endX, endY) {
-            startBox = board.getBox(startX, startY)
-            endBox = board.getBox(endX, endY)
-            move = new Move(player, startBox, endBox)
+            let startBox = board.getBox(startX, startY)
+            let endBox = board.getBox(endX, endY)
+            let move = new Move(player, startBox, endBox)
             return this.makeMove(move, player)
         }
 
         makeMove(move, player) {
-            sourcePiece = move.getStart().getPiece()
+            let sourcePiece = move.moveStart.spotPiece
             if(sourcePiece == null) {
                 return false
             }
 
             // valid player
-            if(player != currentTurn) {
+            if(player != this.currentTurn) {
+                console.log(`Not ${player}'s Turn.`)
                 return false
             }
 
             if(sourcePiece.white != player.whiteSide) {
+                let pturn = player.whiteSide ? "Black" : "White"
+                console.log(`Not ${pturn}'s Turn`)
                 return false
             }
 
             // valid move?
-            if(!sourcePiece.canMove(board,move.getStart(), move.getEnd())) {
+            if(!sourcePiece.canMove(board,move.moveStart, move.moveEnd)) {
+                console.log("Not a valid move")
                 return false
             }
 
             // kill?
-            destPiece = move.getStart().spotPiece()
+            let destPiece = move.moveEnd.spotPiece
             if (destPiece != null) {
-                destPiece.hasBeenKilled(true)
-                move.setPieceKilled(destPiece)
+                destPiece.hasBeenKilled = true
+                removePieceImg(move.moveEnd)
+                move.setPieceKilled(destPiece.white, destPiece)
             }
 
             // castling?
@@ -462,31 +554,37 @@
             }
 
             // store the move
-            movesPlayed.add(move)
+            this.movesPlayed.push(move)
 
             // move piece from the start box to the end box
-            move.getEnd().setPiece(move.getStart().getPiece())
-            move.getStart.getPiece(null)
+            move.moveEnd.spotPiece = move.moveStart.spotPiece
+            move.moveStart.spotPiece = null
+            removePieceImg(move.moveStart)
 
-            if (this.currentTurn == players[0]) {
-                this.currentTurn = players[1]
+            if (this.currentTurn == this.players[0]) {
+                this.currentTurn = this.players[1]
             }
             else {
-                this.currentTurn = players[0]
+                this.currentTurn = this.players[0]
             }
+            let spos = NTOA[move.moveStart.ypos] + (move.moveStart.xpos + 1)
+            let epos = NTOA[move.moveEnd.ypos] + (move.moveEnd.xpos + 1)
+            console.log(`${spos} -> ${epos}`)
+            updateTurn()
+            updateBoard()
             return true
         }
     }
 
     function initializeGame() {
         board = new Board()
-        let p1 = new HumanPlayer(true)
-        let p2 = new HumanPlayer(false)
+        board.board()
+        p1 = new HumanPlayer(true)
+        p2 = new HumanPlayer(false)
         var players = [p1, p2]
         moves = []
         game = new Game(players, board, 'ACTIVE', moves)
         game.initialize(p1, p2)
-        console.log(game)
 
         updateBoard()
     }
@@ -509,10 +607,43 @@
                     let pieceImg = document.createElement('img')
                     pieceImg.src = `images/${piece}.png`
                     let square = document.getElementById(id)
-                    square.appendChild(pieceImg)
+                    if(!square.hasChildNodes())
+                        square.appendChild(pieceImg)
                 }
             }
         }
+    }
+
+    function removePieceImg(squareToEmpty) {
+        id = squareToEmpty.xpos.toString() + squareToEmpty.ypos.toString()
+        square = document.getElementById(id)
+        image = square.firstChild
+        image.remove()
+    }
+
+    function updateTurn() {
+        let announcer = document.getElementById("turn-announcer")
+        if(turn % 2 == 0)
+            announcer.innerText = "Black's Turn"
+        else
+            announcer.innerText = "White's Turn"
+        turn++
+    }
+
+    function straightPathIsClear(start, end) {
+        console.log(start, end)
+        let lowx = Math.min(start.xpos, end.xpos)
+        let lowy = Math.min(start.ypos, end.ypos)
+        let distance = Math.abs( (start.xpos + start.ypos) - (end.xpos + end.ypos))
+        for(let i = 0; i < distance; i++) {
+
+        }
+        console.log(lowx, lowy)
+        console.log(distance)
+        return true
+    }
+    function diagonalPathIsClear(start, end) {
+        return true
     }
 
     </script>
