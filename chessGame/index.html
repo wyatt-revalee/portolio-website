@@ -90,6 +90,7 @@
     var currentCell
     var origColor
     var playerToMove = null
+    var castling = 0
     
     function activatePiece() {
         playerToMove = game.currentTurn
@@ -174,45 +175,44 @@
     class King extends Piece {
         constructor(isWhite) {
             super(isWhite)
-            this.castlingDone = false
-        }
-
-        set isCastlingDone(castlingDone) {
-            this.castlingDone = castlingDone
-        }
-
-        get isCastlingDone() {
-            return this.castlingDone
+            this.hasMoved = false
         }
 
         canMove(board, start, end) {
 
-            // If the destination holds a piece of the same color, we can't move there
-            if (end.spotPiece != null && end.spotPiece.whiteOrBlack == this.whiteOrBlack) {
+            // If the destination holds a piece of the same color, we can't move there, unless it's a rook, then check to castle
+
+            let target = null
+            if(end.spotPiece != null)
+                target = end.spotPiece.constructor.name
+            if (end.spotPiece != null && end.spotPiece.whiteOrBlack == this.whiteOrBlack && target != "Rook") {
                 return false
             }
 
             let x = Math.abs(start.xpos - end.xpos)
             let y = Math.abs(start.ypos - end.ypos)
-            console.log(x, y)
             if(x + y == 1 || (x == 1 && y == 1)) {
                 // check if move wil not result in king being attacked
                 // if so, return true
+                this.hasMoved = true
                 return true
             }
-            return this.isValidCastling(board, start, end);
+            this.isValidCastling(board, start, end)
+            return false
         }
 
         isValidCastling(board, start, end) {
-            if(this.isCastlingDone) {
+            let rook = end.spotPiece
+            if(this.hasMoved || rook.hasMoved)
                 return false
-            }
             // Logic for returning true or false
+            if(straightPathIsClear(start, end)) {
+                makeCastle(start, end, this, rook)
+                castling++
+                this.hasMoved
+            }
         }
 
-        isCastlingMove(start, end) {
-            //check if starting and ending position are correct
-        }
     }
 
     class Queen extends Piece {
@@ -228,7 +228,15 @@
 
             let x = Math.abs(start.xpos - end.xpos)
             let y = Math.abs(start.ypos - end.ypos)
-            return (x == y) || ((x && !y) || (!x && y))
+
+            if(x == 0 || y == 0)
+                if(straightPathIsClear(start, end))
+                    return (x == y) || ((x && !y) || (!x && y))
+                else
+                    return false
+            else
+                if(diagonalPathIsClear(start, end))
+                    return (x == y) || ((x && !y) || (!x && y))
         }
     }
     class Knight extends Piece {
@@ -321,13 +329,14 @@
             }
 
             if(this.hasMoved == false) { // If pawn hasn't moved, allow to move forward 2 spaces
-                if((x == 1 && y == 0) || (x == 2 && y == 0)) {
-                    if(straightPathIsClear(start, end))
-                    this.hasMoved = true
-                    return true
+                if((x == 2 && y == 0)) {
+                    if(straightPathIsClear(start, end)) {
+                        this.hasMoved = true
+                        return true
+                    }
                 }
             }
-            if(straightPathIsClear(start, end))
+            if(straightPathIsClear(start, end) && board.boxes[end.xpos][end.ypos].spotPiece == null)
                 return x == 1 && y == 0
             else
                 return false
@@ -453,13 +462,13 @@
             this.castlingMove = castlingMove
         }
 
-        setPieceKilled(white, piece) {
-            let color = null
-            if(white)
-                color = "White"
-            else
-                color = "Black"
-            console.log(`${color} ${piece.constructor.name} has been killed.`)
+        setPieceKilled(swhite, spiece, dwhite, dpiece) {
+            let scolor = null
+            let dcolor = null
+            scolor = (swhite ? "White" : "Black")
+            dcolor = (dwhite ? "White" : "Black")
+
+            console.log(`${scolor} ${spiece.constructor.name} takes ${dcolor} ${dpiece.constructor.name}.`)
         }
 
     }
@@ -536,6 +545,10 @@
 
             // valid move?
             if(!sourcePiece.canMove(board,move.moveStart, move.moveEnd)) {
+                if(castling > 0) {
+                    castling--
+                    return false
+                }
                 console.log("Not a valid move")
                 return false
             }
@@ -545,12 +558,7 @@
             if (destPiece != null) {
                 destPiece.hasBeenKilled = true
                 removePieceImg(move.moveEnd)
-                move.setPieceKilled(destPiece.white, destPiece)
-            }
-
-            // castling?
-            if(sourcePiece != null && sourcePiece instanceof King && sourcePiece.isCaslingMove) {
-                move.setCastlingMove(true)
+                move.setPieceKilled(sourcePiece.white, sourcePiece, destPiece.white, destPiece)
             }
 
             // store the move
@@ -631,19 +639,125 @@
     }
 
     function straightPathIsClear(start, end) {
-        console.log(start, end)
-        let lowx = Math.min(start.xpos, end.xpos)
-        let lowy = Math.min(start.ypos, end.ypos)
-        let distance = Math.abs( (start.xpos + start.ypos) - (end.xpos + end.ypos))
-        for(let i = 0; i < distance; i++) {
-
+        let horzMove = false
+        let startP = 0
+        let endP = 0
+        if(start.xpos == end.xpos) {
+            horzMove = true
+            startP = Math.min(start.ypos, end.ypos)
+            endP = Math.max(start.ypos, end.ypos)
         }
-        console.log(lowx, lowy)
-        console.log(distance)
+        else {
+            horzMove = false
+            startP = Math.min(start.xpos, end.xpos)
+            endP = Math.max(start.xpos, end.xpos)
+        }
+
+        if(horzMove == true) {
+            for (let i = startP+1; i < endP; i++) {
+                if(board.boxes[start.xpos][i].spotPiece != null)
+                return false
+            }
+        }
+        else
+            for (let i = startP+1; i < endP; i++) {
+                    if (board.boxes[i][start.ypos].spotPiece != null)
+                        return false
+                }
+            
         return true
     }
     function diagonalPathIsClear(start, end) {
+        let right = false
+        let up = false
+        if(start.ypos < end.ypos)
+            right = true
+        if(start.xpos < end.xpos)
+            up = true
+        
+        let distance = Math.abs(start.ypos - end.ypos)
+        
+        //Four possible directions of movement
+
+        // Up and Left
+        if(up == true && right == true)
+        {
+            //check for pieces
+            for(let i = 1; i < distance; i++) {
+                if(board.boxes[start.xpos+i][start.ypos+i].spotPiece != null)
+                    return false
+            }
+        }
+
+        // Up and Right
+        if (up == true && right == false) {
+            //check for pieces
+            for (let i = 1; i < distance; i++) {
+                if (board.boxes[start.xpos + i][start.ypos - i].spotPiece != null)
+                    return false
+            }
+            
+        }
+
+        // Down and Left
+        if (up == false && right == true) {
+            //check for pieces
+            for (let i = 1; i < distance; i++) {
+                if (board.boxes[start.xpos - i][start.ypos + i].spotPiece != null)
+                    return false
+            }
+        }
+
+        // Down and Right
+        if (up == false && right == false) {
+            //check for pieces
+            for (let i = 1; i < distance; i++) {
+                if (board.boxes[start.xpos - i][start.ypos - i].spotPiece != null)
+                    return false
+            }
+        }
+
         return true
+    }
+
+    function makeCastle(start, end, king, rook) {
+        let kingSide = false
+        if(start.ypos < end.ypos)
+            kingSide = true
+        if(kingSide == true){
+            // Move King
+            board.boxes[start.xpos][start.ypos].spotPiece = null
+            board.boxes[start.xpos][6].spotPiece = king
+
+            // Move Rook
+            board.boxes[start.xpos][end.ypos].spotPiece = null
+            board.boxes[start.xpos][5].spotPiece = rook
+            console.log("O-O")
+        }
+        else {
+            board.boxes[start.xpos][start.ypos].spotPiece = null
+            board.boxes[start.xpos][2].spotPiece = king
+
+            // Move Rook
+            board.boxes[start.xpos][end.ypos].spotPiece = null
+            board.boxes[start.xpos][3].spotPiece = rook
+            console.log("O-O-O")
+        }
+        let kingbox = board.boxes[start.xpos][start.ypos]
+        let rookbox = board.boxes[end.xpos][end.ypos]
+        removePieceImg(kingbox)
+        removePieceImg(rookbox)
+
+        if (game.currentTurn == game.players[0]) {
+            game.currentTurn = game.players[1]
+        }
+        else {
+            game.currentTurn = game.players[0]
+        }
+    
+        updateTurn()
+        updateBoard()
+
     }
 
     </script>
@@ -657,6 +771,8 @@
         <div class='grid-container'>
         </div>
     </div>
+    <h3 style="text-align: center;">All pieces functional. Lacking check/checkmate as well as endgame.</h3>
+
 </body>
 
 </html>
