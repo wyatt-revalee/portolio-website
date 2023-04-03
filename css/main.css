@@ -2511,7 +2511,7 @@ input::-moz-focus-inner {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  background-image: url(../images/services-bg.jpg);
+  background-image: url(../images/mb-back.jpg);
   color: rgba(255, 255, 255, 0.7);
   position: relative;
 }
