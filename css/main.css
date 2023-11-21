@@ -1470,6 +1470,7 @@ input::-moz-focus-inner {
   padding-top: 3.2rem;
   margin-bottom: 8rem;
   position: relative;
+  color: white;
 }
 
 .section-heading::before {
@@ -1502,7 +1503,7 @@ input::-moz-focus-inner {
   font-weight: 400;
   line-height: 1.259;
   letter-spacing: -0.05rem;
-  color: #000000;
+  color: white;
 }
 
 .item-title {
@@ -1551,6 +1552,7 @@ input::-moz-focus-inner {
     padding-top: 0;
     padding-bottom: 3.2rem;
     text-align: center;
+    color: white;
   }
 
   .section-heading::before {
@@ -2734,7 +2736,7 @@ input::-moz-focus-inner {
 .s-works {
   padding-top: 19.2rem;
   padding-bottom: 16rem;
-  background-color: #ffffff;
+  background-color: #050505;
 }
 
 .masonry-wrap {
@@ -2752,14 +2754,16 @@ input::-moz-focus-inner {
 
 .masonry__brick {
   float: left;
+  color: white;
   padding: 0 30px;
   margin-bottom: 60px;
 }
 
 .item-folio {
   text-align: center;
-  padding: 60px;
-  background-color: #EFEFEF;
+  padding: 30px;
+  background-color: #1d1d1d;
+  border-radius: 30px;
   transition: all 0.5s ease-in-out;
 }
 
@@ -2870,12 +2874,11 @@ input::-moz-focus-inner {
 
 .item-folio__title {
   font-weight: 500;
-  color: #000000;
-}
+  color: white;}
 
 .item-folio__cat {
+  color: white;
   font-weight: 300;
-  color: rgba(0, 0, 0, 0.7);
 }
 
 .item-folio__cat::before {

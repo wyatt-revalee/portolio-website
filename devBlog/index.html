@@ -8,6 +8,10 @@
     </head>
 
     <body>
+        <div class="header">
+            <a class="header-item" href="./unityGame/index.html">Demo</a>
+            <a class="header-item" href="https://github.com/wyatt-revalee/PrismaticDepths">Code</a>
+        </div>
         <div class="entry-wrapper">
             <div class="entry-card">
                 <a href="./blogs/111923.html">
@@ -31,6 +35,27 @@
         body
         {
             background-color: #1e212b;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+        }
+
+        .header
+        {
+            height: 50px;
+            background-color: #0c0f17;
+            display: flex;
+            width: 25%;
+            justify-content: center;
+            margin: auto;
+            padding-bottom: 10px;
+            border: 2px solid white;
+            border-radius: 10px;
+        }
+
+        .header-item
+        {
+            margin: 10px;
+            font-size: 30px;
             color: white;
         }
 
@@ -42,6 +67,7 @@
         .entry-card {
             background-color: #0c0f17;
             border: 2px solid white;
+            border-radius: 10px;
             display: flex;
             height: 200px;
             margin: auto;
