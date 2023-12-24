@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Social App</title>
+</head>
+
+<body>
+    <div class="header">
+        <a class="header-item" href="https://github.com/wyatt-revalee/social-app">Code</a>
+        <a class="header-item" href="../index.html">Portfolio</a>
+    </div>
+    <div class="entry-wrapper">
+        <div class="entry-card">
+            <h1 class="title">First Impressions</h1>
+            <div class="entry-body">
+                <p class="entry-left">This app is very similar to facebook in terms of user experience. Users are greeted with a login screen, where they input their information to sign in, or create an account if they don't already have one.
+                </p>
+                <p class="entry-right">
+                    <img class="entry-image" src="./images/login.png" />
+                </p>
+            </div>
+        </div>
+
+        <div class="entry-card">
+            <h1 class="title">The Home Feed</h1>
+            <div class="entry-body">
+                <p class="entry-left">
+                    <img class="entry-image" src="./images/home.png" />
+                </p>
+                <p class="entry-right">When users log in, they are greeted with their home feed. This consists of posts of their own, along with those of the people they follow.
+                    Users are able to engage with posts in different ways, such as different reactions and posting comments.
+
+                    At the top of the home page, users are also able to create new posts. All they have to do is input their text, and add something extra, like a picture, location, or feeling, and hit post for all of their friends to see.
+                </p>
+            </div>
+        </div>
+
+        <div class="entry-card">
+            <h1 class="title">User Profiles</h1>
+            <div class="entry-body">
+                <p class="entry-left">Each user also has their own profile, where others can see all of their posts, and learn more about them.
+                    This is where users are able to update their info as well, should they wish.
+                </p>
+                <p class="entry-right">
+                    <img class="entry-image" src="./images/profile.png" />
+                </p>
+            </div>
+        </div>
+
+        <div class="entry-card">
+            <h1 class="title">How It Works</h1>
+            <div class="entry-body">
+                This app is built using React and JavaScript/TypeScript on the front-end, and a REST api and MongoDB on the back.
+                Every action the users does, such as submitting a post, entering a comment, or following a user goes through the front end, passed to the api, and information is exchanged with the database.
+
+                I would make a live version of the app, but there unfortunately isn't a free way to do that, hence the reason for this page existing.
+            </div>
+        </div>
+
+    </div>
+    <script>
+    </script>
+</body>
+<style>
+    body {
+        background-color: #1a1a1a;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: white;
+    }
+
+    .header {
+        height: 50px;
+        background-color: #141414;
+        display: flex;
+        width: 25%;
+        justify-content: center;
+        margin: auto;
+        padding-bottom: 10px;
+        border: 2px solid white;
+        border-radius: 10px;
+        box-shadow: 15px 15px 20px #0a0c12;
+    }
+
+    .header-item {
+        margin: 10px;
+        font-size: 30px;
+        color: white;
+    }
+
+    .entry-wrapper {
+        padding-top: 100px;
+    }
+
+    .entry-card {
+        background-color: #141414;
+        border: 2px solid white;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        margin-top: 50px;
+        width: 60%;
+        position: relative;
+        box-shadow: 15px 15px 20px #0a0c12;
+    }
+
+    @media only screen and (max-width: 1200px) {
+        .entry-card {
+            height: 80%;
+            width: 80%;
+        }
+
+        .header {
+            position: fixed;
+            width: 100%;
+        }
+    }
+
+    .title
+    {
+        text-align: center;
+    }
+
+    .entry-body
+    {
+        display: flex;
+        padding: 10px;
+    }
+
+    .entry-left {
+        padding: 5px;
+        text-align: center;
+        height: 50%;
+        flex: 50%;
+    }
+    
+    .entry-right {
+        padding: 5px;
+        text-align: center;
+        height: 50%;
+        flex: 50%;
+    }
+
+    .entry-image {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 20px;
+    }
+
+</style>
+
+</html>
